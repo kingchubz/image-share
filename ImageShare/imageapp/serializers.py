@@ -15,14 +15,30 @@ class CommentSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['url', 'owner', 'image', 'text']
 
 
-class ImageSerializer(serializers.HyperlinkedModelSerializer):
-    active = serializers.BooleanField(read_only=True)
-    tag_set = TagSerializer(read_only=True, many=True)
+class ImageListSerializer(serializers.HyperlinkedModelSerializer):
+    tag_set = TagSerializer(write_only=True, many=True)
+
+    class Meta:
+        model = Image
+        fields = ['url', 'owner', 'image', 'description', 'tag_set']
+        extra_kwargs = {
+            'description': {'write_only': True},
+            'owner': {'write_only': False},
+        }
+
+
+class ImageDetailSerializer(serializers.HyperlinkedModelSerializer):
+    tag_set = TagSerializer(read_only=False, many=True)
     comment_set = CommentSerializer(read_only=True, many=True)
 
     class Meta:
         model = Image
-        fields = ['url', 'owner', 'image', 'description', 'active', 'created', 'tag_set', 'comment_set']
+        fields = ['url', 'owner', 'image', 'description', 'created', 'tag_set', 'comment_set']
+        extra_kwargs = {
+            'active': {'read_only': True},
+            'owner': {'read_only': True},
+            'image': {'read_only': True},
+        }
 
 
 class ReportSerializer(serializers.HyperlinkedModelSerializer):

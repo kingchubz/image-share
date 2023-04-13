@@ -9,7 +9,7 @@ from imageapp.models import Image, Tag, Comment, Report, Profile
 from django.contrib.auth.models import User
 
 # import serializers
-from imageapp.serializers import ImageSerializer, TagSerializer, CommentSerializer, ReportSerializer, UserSerializer, \
+from imageapp.serializers import ImageListSerializer, ImageDetailSerializer, TagSerializer, CommentSerializer, ReportSerializer, UserSerializer, \
     ProfileSerializer
 
 # import permissions
@@ -19,13 +19,13 @@ from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnl
 
 class ImageList(generics.ListCreateAPIView):
     queryset = Image.objects.all()
-    serializer_class = ImageSerializer
+    serializer_class = ImageListSerializer
     permission_classes = [AllowAny]  # [IsAuthenticatedOrReadOnly]
 
 
 class ImageDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Image.objects.all()
-    serializer_class = ImageSerializer
+    serializer_class = ImageDetailSerializer
     permission_classes = [AllowAny]  # [IsOwnerOrReadOnly]
 
 
