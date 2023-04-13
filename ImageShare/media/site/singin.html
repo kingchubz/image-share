@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Bootstrap demo</title>
+		<link href="./bootstrap-5.2.3/css/bootstrap.css" rel="stylesheet">
+	</head>
+	<body class="text-bg-secondary d-flex flex-column min-vh-100">
+	
+		<header>
+			<nav class="navbar navbar-dark bg-dark">
+				<div class="container-float">
+					<a class="navbar-brand p-3" href="#">
+						<img src="./logo.ico" class="d-inline-block">
+						Explore
+					</a>
+				</div>
+				
+				<div class="container">
+					<input type="text" class="form-control" id="Search" placeholder="Search">
+				</div>
+				
+				<div class="navbar-nav d-inline-block px-2">		
+							<a class="nav-link d-inline-block px-2" href="#">Sing In</a>		
+							<a class="nav-link d-inline-block" href="#">Sing Up</a>
+				</div>
+
+				<div style="padding-right: 4px" class="nav-item dropdown d-none">
+					<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+						<img src="./logo.ico" class="b-inline">
+					</a>
+					<ul class="dropdown-menu">
+						<li><a class="dropdown-item" href="#">Profile</a></li>
+						<li><a class="dropdown-item" href="#">Upload</a></li>
+						<li><a class="dropdown-item" href="#">Logout</a></li>
+					</ul>
+				</div>
+			</nav>
+		</header>
+		
+		<form style="max-width: 600px" class="container row-3  position-absolute top-50 start-50 translate-middle">
+				<div class="col mb-4">
+					<input type="email" class="form-control" id="Email" placeholder="Email">
+				</div>
+				<div class="col mb-3">
+					<input type="password" class="form-control" id="Password" placeholder="Password">
+				</div>
+				<button type="submit" class="btn btn-primary">Submit</button>
+				<div class="col mb-4 text-center">
+					<a href="">Register</a>
+				</div>
+		</form>
+		
+		<footer class="mt-auto">
+			<hr>
+			<p class="fw-lighter text-center">Dmitriev Svyatoslav shinyhero777@gmail.com</p>
+		</footer>
+		
+		<script src="./bootstrap-5.2.3/js/bootstrap.bundle.min.js"></script>
+	</body>
+</html>
