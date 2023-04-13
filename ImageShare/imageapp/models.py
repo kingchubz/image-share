@@ -86,7 +86,7 @@ def auto_delete_image_on_change(sender, instance, **kwargs):
 
 
 class Tag(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     images = models.ManyToManyField(Image, blank=True)
 
     def __str__(self):
