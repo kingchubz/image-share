@@ -42,6 +42,7 @@ class CommentSerializer(serializers.HyperlinkedModelSerializer):
 
 class ImageListSerializer(serializers.HyperlinkedModelSerializer):
     tag_set = TagSerializer(many=True)
+
     class Meta:
         model = Image
         fields = ['url', 'owner', 'image', 'description', 'tag_set']
@@ -66,6 +67,9 @@ class ImageDetailSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ReportSerializer(serializers.HyperlinkedModelSerializer):
+    byUser = ProfileSerializer(read_only=True)
+    reportedUser = ProfileSerializer(read_only=True)
+
     class Meta:
         model = Report
         fields = ['url', 'byUser', 'reportedUser', 'text']
