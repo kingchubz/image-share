@@ -5,6 +5,8 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>Bootstrap demo</title>
 		<link href="./bootstrap-5.2.3/css/bootstrap.css" rel="stylesheet">
+		<script src="jquery.js"></script>
+		<script src="singup.js" type="text/javascript"></script>
 	</head>
 	<body class="text-bg-secondary d-flex flex-column min-vh-100">
 	
@@ -41,18 +43,18 @@
 	
 		<form style="max-width: 600px" class="container row-4  position-absolute top-50 start-50 translate-middle">
 				<div class="col mb-4">
-					<input type="email" class="form-control" id="Email" placeholder="Email address">
+					<input type="email" class="form-control" id="email" placeholder="Email address">
 				</div>
 				<div class="col mb-4">
-					<input type="text" class="form-control" id="Nickname" placeholder="Nickname">
+					<input type="text" class="form-control" id="username" placeholder="Username">
 				</div>
 				<div class="col mb-4">
-					<input type="password" class="form-control" id="Password" placeholder="Password">
+					<input type="password" class="form-control" id="password" placeholder="Password">
 				</div>
 				<div class="col mb-4">
-					<input type="password" class="form-control" id="ConfirmPassword" placeholder="Confirm Password">
+					<input type="password" class="form-control" id="password_confirm" placeholder="Confirm Password">
 				</div>
-				<button type="submit" class="btn btn-primary">Submit</button>
+				<button type="button" onclick="register()" class="btn btn-primary">Submit</button>
 		</form>
 		
 		<footer class="mt-auto">

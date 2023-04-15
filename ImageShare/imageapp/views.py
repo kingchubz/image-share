@@ -10,7 +10,7 @@ from django.contrib.auth.models import User
 
 # import serializers
 from imageapp.serializers import ImageListSerializer, ImageDetailSerializer, TagSerializer, CommentSerializer, ReportSerializer, UserSerializer, \
-    ProfileSerializer
+    ProfileSerializer, RegisterSerializer
 
 # import permissions
 from imageapp.permissions import IsOwnerOrReadOnly
@@ -88,6 +88,11 @@ class ProfileDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ProfileSerializer
     permission_classes = [AllowAny]  # [IsOwnerOrReadOnly]
 
+
+class RegisterView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = RegisterSerializer
+    permission_classes = [AllowAny]
 
 # overriding default knox login view to allow BasicAuthentication
 class LoginView(KnoxLoginView):
