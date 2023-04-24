@@ -17,9 +17,6 @@ $.get( "../../images/", function( data ) {
             }
         }
     }
-
-
-
     });
 });
 
