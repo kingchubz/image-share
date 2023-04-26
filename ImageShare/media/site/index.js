@@ -17,8 +17,13 @@ $.get( "../../images/", function( data ) {
             }
         }
     }
+
+    if(document.cookie.includes("token")){
+        $("#auth").attr('style', 'display: none !important');
+    } else {
+        $("#profile").attr('style', 'display: none !important');
+    }
+
     });
 });
-
-
 

@@ -1,10 +1,9 @@
 $("document").ready(()=>{
-
-
-
-
-
-
+    if(document.cookie.includes("token")){
+        window.location.replace("http://127.0.0.1:8000/media/site/index.html");
+    } else {
+        $("#profile").attr('style', 'display: none !important');
+    }
 });
 
 function register() {

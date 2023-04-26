@@ -3,10 +3,10 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Bootstrap demo</title>
+		<title>Sign Up</title>
 		<link href="./bootstrap-5.2.3/css/bootstrap.css" rel="stylesheet">
 		<script src="jquery.js"></script>
-		<script src="singin.js" type="text/javascript"></script>
+		<script src="signup.js" type="text/javascript"></script>
 	</head>
 	<body class="text-bg-secondary d-flex flex-column min-vh-100">
 	
@@ -23,12 +23,12 @@
 					<input type="text" class="form-control" id="Search" placeholder="Search">
 				</div>
 				
-				<div class="navbar-nav d-inline-block px-2">		
-							<a class="nav-link d-inline-block px-2" href="#">Sing In</a>		
-							<a class="nav-link d-inline-block" href="#">Sing Up</a>
+				<div id="auth" class="navbar-nav d-inline-block px-2">
+					<a class="nav-link d-inline-block px-2" href="#">Sing In</a>
+					<a class="nav-link d-inline-block" href="#">Sing Up</a>
 				</div>
 
-				<div style="padding-right: 4px" class="nav-item dropdown d-none">
+				<div id="profile" style="padding-right: 4px" class="nav-item dropdown d-none">
 					<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
 						<img src="./logo.ico" class="b-inline">
 					</a>
@@ -40,18 +40,18 @@
 				</div>
 			</nav>
 		</header>
-		
-		<form style="max-width: 600px" class="container row-3  position-absolute top-50 start-50 translate-middle">
+	
+		<form style="max-width: 600px" class="container row-4  position-absolute top-50 start-50 translate-middle">
 				<div class="col mb-4">
 					<input type="text" class="form-control" id="username" placeholder="Username">
 				</div>
-				<div class="col mb-3">
+				<div class="col mb-4">
 					<input type="password" class="form-control" id="password" placeholder="Password">
 				</div>
-				<button type="button" onclick="login()" class="btn btn-primary">Submit</button>
-				<div class="col mb-4 text-center">
-					<a href="">Register</a>
+				<div class="col mb-4">
+					<input type="password" class="form-control" id="password_confirm" placeholder="Confirm Password">
 				</div>
+				<button type="button" onclick="register()" class="btn btn-primary">Submit</button>
 		</form>
 		
 		<footer class="mt-auto">
