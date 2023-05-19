@@ -62,6 +62,12 @@ class ImageDetailSerializer(serializers.ModelSerializer):
         }
 
 
+class ImageActivateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Image
+        fields = ['id', 'active']
+
+
 class ReportSerializer(serializers.ModelSerializer):
     byUser = ProfileSerializer(read_only=True)
     reportedUser = ProfileSerializer(read_only=True)

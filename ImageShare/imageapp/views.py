@@ -1,6 +1,7 @@
 # import generic views
-from rest_framework import generics
-# import knox view
+from rest_framework import generics, mixins
+
+# import knox login view
 from knox.views import LoginView as KnoxLoginView
 
 from rest_framework.authentication import BasicAuthentication
@@ -11,7 +12,7 @@ from django.contrib.auth.models import User
 
 # import serializers
 from imageapp.serializers import ImageListSerializer, ImageDetailSerializer, TagSerializer, CommentSerializer, ReportSerializer, UserSerializer, \
-    ProfileSerializer, RegisterSerializer
+    ProfileSerializer, RegisterSerializer, ImageActivateSerializer
 
 # import permissions
 from imageapp.permissions import IsOwnerOrReadOnly
@@ -36,10 +37,17 @@ class UserImageView(generics.ListAPIView):
         profile = self.request.user.profile
         return Image.objects.filter(owner=profile)
 
+
 class ImageDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Image.objects.filter(active=True)
     serializer_class = ImageDetailSerializer
     permission_classes = [IsOwnerOrReadOnly]
+
+
+class ImageActivate(generics.GenericAPIView, mixins.ListModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin):
+    queryset = Image.objects.filter(active=False)
+    serializer_class = ImageActivateSerializer
+    permission_classes = [IsAdminUser]
 
 
 class TagList(generics.ListCreateAPIView):
