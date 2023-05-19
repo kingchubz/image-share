@@ -21,13 +21,13 @@ from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnl
 class ImageList(generics.ListCreateAPIView):
     queryset = Image.objects.filter(active=True)
     serializer_class = ImageListSerializer
-    permission_classes = [AllowAny]  # [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 
 class ImageDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Image.objects.filter(active=True)
     serializer_class = ImageDetailSerializer
-    permission_classes = [AllowAny]  # [IsOwnerOrReadOnly]
+    permission_classes = [IsOwnerOrReadOnly]
 
 
 class TagList(generics.ListCreateAPIView):
