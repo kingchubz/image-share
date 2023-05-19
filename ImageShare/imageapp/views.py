@@ -2,6 +2,7 @@
 from rest_framework import generics
 # import knox view
 from knox.views import LoginView as KnoxLoginView
+
 from rest_framework.authentication import BasicAuthentication
 
 # import models
@@ -18,13 +19,13 @@ from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnl
 
 
 class ImageList(generics.ListCreateAPIView):
-    queryset = Image.objects.all()
+    queryset = Image.objects.filter(active=True)
     serializer_class = ImageListSerializer
     permission_classes = [AllowAny]  # [IsAuthenticatedOrReadOnly]
 
 
 class ImageDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Image.objects.all()
+    queryset = Image.objects.filter(active=True)
     serializer_class = ImageDetailSerializer
     permission_classes = [AllowAny]  # [IsOwnerOrReadOnly]
 
@@ -69,6 +70,7 @@ class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = RegisterSerializer
     permission_classes = [AllowAny]
+
 
 # overriding default knox login view to allow BasicAuthentication
 class LoginView(KnoxLoginView):
