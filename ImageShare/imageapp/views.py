@@ -27,6 +27,14 @@ class ImageList(generics.ListCreateAPIView):
         serializer.save(owner=self.request.user.profile)
 
 
+# Lists all images of particular user
+class UserImageView(generics.ListAPIView):
+    serializer_class = ImageListSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        profile = self.request.user.profile
+        return Image.objects.filter(owner=profile)
 
 class ImageDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Image.objects.filter(active=True)
