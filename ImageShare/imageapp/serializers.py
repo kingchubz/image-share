@@ -3,7 +3,7 @@ from imageapp.models import Image, Tag, Comment, Report, Profile
 from django.contrib.auth.models import User
 
 
-class ProfileSerializer(serializers.HyperlinkedModelSerializer):
+class ProfileSerializer(serializers.ModelSerializer):
     username = serializers.SlugRelatedField(
         source='user',
         read_only=True,
@@ -12,24 +12,21 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Profile
-        fields = ['user', 'username', 'picture']
+        fields = ['username', 'picture']
 
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     profile = ProfileSerializer(read_only=True)
 
     class Meta:
         model = User
-        fields = ['url', 'profile', 'username']
+        fields = ['id', 'profile', 'username']
 
 
-class TagSerializer(serializers.HyperlinkedModelSerializer):
+class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
-        fields = ['url', 'name', 'images']
-        extra_kwargs = {
-            'images': {'write_only': True},
-        }
+        fields = ['id', 'url', 'name']
 
 
 class CommentSerializer(serializers.HyperlinkedModelSerializer):
@@ -40,25 +37,24 @@ class CommentSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['owner', 'text']
 
 
-class ImageListSerializer(serializers.HyperlinkedModelSerializer):
+class ImageListSerializer(serializers.ModelSerializer):
     tag_set = TagSerializer(many=True)
 
     class Meta:
         model = Image
-        fields = ['url', 'owner', 'image', 'description', 'tag_set']
+        fields = ['id', 'url', 'image', 'description', 'tag_set']
         extra_kwargs = {
             'description': {'write_only': True},
-            'owner': {'write_only': False},
         }
 
 
-class ImageDetailSerializer(serializers.HyperlinkedModelSerializer):
-    tag_set = TagSerializer(read_only=False, many=True)
+class ImageDetailSerializer(serializers.ModelSerializer):
+    tag_set = TagSerializer(read_only=True, many=True)
     comment_set = CommentSerializer(read_only=True, many=True)
 
     class Meta:
         model = Image
-        fields = ['url', 'owner', 'image', 'description', 'created', 'tag_set', 'comment_set']
+        fields = ['id', 'owner', 'image', 'description', 'created', 'tag_set', 'comment_set']
         extra_kwargs = {
             'active': {'read_only': True},
             'owner': {'read_only': True},
@@ -66,13 +62,13 @@ class ImageDetailSerializer(serializers.HyperlinkedModelSerializer):
         }
 
 
-class ReportSerializer(serializers.HyperlinkedModelSerializer):
+class ReportSerializer(serializers.ModelSerializer):
     byUser = ProfileSerializer(read_only=True)
     reportedUser = ProfileSerializer(read_only=True)
 
     class Meta:
         model = Report
-        fields = ['url', 'byUser', 'reportedUser', 'text']
+        fields = ['id', 'byUser', 'reportedUser', 'text']
 
 
 class RegisterSerializer(serializers.ModelSerializer):
