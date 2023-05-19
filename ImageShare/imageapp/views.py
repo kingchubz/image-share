@@ -65,30 +65,6 @@ class ReportDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [AllowAny]  # [IsAdminUser]
 
 
-class UserList(generics.ListCreateAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    permission_classes = [AllowAny]  # [IsOwnerOrReadOnly]
-
-
-class UserDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    permission_classes = [AllowAny]  # [IsOwnerOrReadOnly]
-
-
-class ProfileList(generics.ListCreateAPIView):
-    queryset = Profile.objects.all()
-    serializer_class = ProfileSerializer
-    permission_classes = [AllowAny]  # [IsOwnerOrReadOnly]
-
-
-class ProfileDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Profile.objects.all()
-    serializer_class = ProfileSerializer
-    permission_classes = [AllowAny]  # [IsOwnerOrReadOnly]
-
-
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = RegisterSerializer
