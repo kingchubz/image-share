@@ -18,6 +18,9 @@ from imageapp.serializers import ImageListSerializer, ImageDetailSerializer, Tag
 from imageapp.permissions import IsOwnerOrReadOnly
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser, AllowAny
 
+from rest_framework import status
+from rest_framework.response import Response
+
 
 class ImageList(generics.ListCreateAPIView):
     queryset = Image.objects.filter(active=True)
@@ -44,10 +47,24 @@ class ImageDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsOwnerOrReadOnly]
 
 
-class ImageActivate(generics.GenericAPIView, mixins.ListModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin):
+class ImageActivate(generics.GenericAPIView, mixins.ListModelMixin, mixins.DestroyModelMixin):
     queryset = Image.objects.filter(active=False)
     serializer_class = ImageActivateSerializer
     permission_classes = [IsAdminUser]
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+    def patch(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.active = True
+        instance.save()
+
+        return Response(status=status.HTTP_200_OK)
+
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(self, request, *args, **kwargs)
+
 
 
 class TagList(generics.ListCreateAPIView):
