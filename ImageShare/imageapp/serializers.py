@@ -65,7 +65,10 @@ class ImageDetailSerializer(serializers.ModelSerializer):
 class ImageActivateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Image
-        fields = ['id', 'active']
+        fields = ['id', 'active', 'image']
+        extra_kwargs = {
+            'image': {'read_only': True},
+        }
 
 
 class ReportSerializer(serializers.ModelSerializer):
