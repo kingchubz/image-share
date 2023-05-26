@@ -66,7 +66,6 @@ class ImageActivate(generics.GenericAPIView, mixins.ListModelMixin, mixins.Destr
         return self.destroy(self, request, *args, **kwargs)
 
 
-
 class TagList(generics.ListCreateAPIView):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
@@ -82,7 +81,10 @@ class TagDetail(generics.RetrieveUpdateDestroyAPIView):
 class CommentList(generics.ListCreateAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
-    permission_classes = [AllowAny]  # [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user.profile)
 
 
 class CommentDetail(generics.RetrieveUpdateDestroyAPIView):

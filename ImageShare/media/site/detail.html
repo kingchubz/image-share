@@ -62,14 +62,16 @@
 	<hr>
 	<h3 class="p-2">Comments</h3>
 	<div class="d-flex flex-row" style="background-color: gray;">
-
 		<div class="d-flex flex-column justify-content-center p-2 text-center" style="border-right: 1px solid white; width:100px">
 				<img class="d-flex" src="./logo.ico">
 				You
 		</div>
-		<div class="p-2 w-100">
-
-			<textarea class="form-control" id="Textarea" rows="3"></textarea>
+		<div class="w-100 position-relative">
+			<form id="text">
+				<textarea name="text" class="form-control" rows="3"></textarea>
+				 <input type="hidden" id="image_id" name="image_id" value="0">
+			</form>
+			<button onclick="make_comment()" class="btn btn-primary position-absolute bottom-0 end-0">Send</button>
 		</div>
 	</div>
 	<div id="comment_field" class="d-flex flex-column">

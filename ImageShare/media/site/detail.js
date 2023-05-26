@@ -1,7 +1,35 @@
+function get_auth_header(c){
+    c = "; " + c;
+    var token = c.split("; token=");
+    token = token.pop().split(";").shift();
+    var auth_header = {"Authorization": "Token " + token};
+
+    return auth_header;
+}
+
+var auth_header = get_auth_header(document.cookie)
+
+var image_id;
+function make_comment(){
+    $("#image_id").attr('value', `${image_id}`);
+
+
+    $.ajax(`../../comments/`,{
+    method: 'POST',
+    headers: auth_header,
+    dataType: 'json',
+    data: $("#text").serialize(),
+    success: function(){
+        location.reload();
+    }});
+}
+
 $.get( "../../images/1/", function( data ) {
   $("document").ready(()=>{
     const image_field = $("#image_field")[0];
     image_field.innerHTML = `<img src="${data.image}" style="max-width:100%;height:auto;"/>`
+
+    image_id = data.id
 
     const tag_field = $("#tag_list")[0];
     const tag_set = data.tag_set;
@@ -25,7 +53,7 @@ $.get( "../../images/1/", function( data ) {
 				</ul>
 			</div>
 			<div class="d-flex flex-column justify-content-center p-2 text-center" style="border-right: 1px solid white; width:100px">
-				<img class="d-flex" src="${comment_set[i].owner.picture}">
+				<img class="d-flex" src="${comment_set[i].owner.picture ? comment_set[i].owner.picture : './logo.ico'}">
 				${comment_set[i].owner.username}
 			</div>
 			<div class="d-inline-flex p-2 mr-2">

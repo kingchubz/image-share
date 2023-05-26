@@ -31,10 +31,28 @@ class TagSerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.HyperlinkedModelSerializer):
     owner = ProfileSerializer(read_only=True)
+    image_id = serializers.IntegerField(write_only=True, required=True)
+
+    def validate_image_id(self, data):
+        if not Image.objects.filter(pk=data, active=True).exists():
+            raise serializers.ValidationError('wrong image id')
+        return data
+
+    def create(self, validated_data):
+        comment = Comment.objects.create(
+            owner=validated_data['owner'],
+            text=validated_data['text'],
+            image_id=validated_data['image_id']
+        )
+
+        return comment
 
     class Meta:
         model = Comment
-        fields = ['owner', 'text']
+        fields = ['owner', 'text', 'image_id']
+        extra_kwargs = {
+            'text': {'required': True}
+        }
 
 
 class ImageListSerializer(serializers.ModelSerializer):
