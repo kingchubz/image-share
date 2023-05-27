@@ -56,11 +56,30 @@ class CommentSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ImageListSerializer(serializers.ModelSerializer):
-    tag_set = TagSerializer(many=True)
+    tag_set = TagSerializer(many=True, read_only=True)
+    tag_id_list = serializers.ListField(child=serializers.IntegerField(), write_only=True, required=True)
+
+    def validate_tag_id_list(self, data):
+        print(data)
+        if Image.objects.filter(pk__in=data).count() != len(data):
+            serializers.ValidationError('Unknown tag error')
+        print(data)
+        return data
+
+    def create(self, validated_data):
+        image = Image(
+            owner=validated_data['owner'],
+            image=validated_data['image'],
+            description=validated_data['description'],
+        )
+        image.save()
+        image.tag_set.set(Tag.objects.filter(pk__in=validated_data['tag_id_list']))
+
+        return image
 
     class Meta:
         model = Image
-        fields = ['id', 'url', 'image', 'description', 'tag_set']
+        fields = ['id', 'url', 'image', 'description', 'tag_set', 'tag_id_list']
         extra_kwargs = {
             'description': {'write_only': True},
         }
