@@ -18,7 +18,7 @@ function make_comment(){
     method: 'POST',
     headers: auth_header,
     dataType: 'json',
-    data: $("#text").serialize(),
+    data: $("#comment_form").serialize(),
     success: function(){
         location.reload();
     }});
