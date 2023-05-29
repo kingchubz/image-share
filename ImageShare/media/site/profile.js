@@ -16,10 +16,10 @@ function delete_image(id){
 }
 
 function post_image(){
-    var formData = new FormData();
-    var desc = $('#description')[0];
+    let formData = new FormData();
+    let desc = $('#description')[0];
     formData.append('description', desc.value);
-    var tag_field = $('#tag_field').val();
+    let tag_field = $('#tag_field').val();
     tag_id_list = tag_field.map((x)=>{return parseInt(x, 10)});
     for(let i=0; i<tag_id_list.length; i++)
         formData.append('tag_id_list', tag_id_list[i])
@@ -39,7 +39,7 @@ function post_image(){
 }
 
 function post_pfp(){
-    var formData = new FormData();
+    let formData = new FormData();
     formData.append('picture', $('input[type=file]#pfp')[0].files[0]);
 
     $.ajax({

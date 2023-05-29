@@ -10,9 +10,17 @@ class ProfileSerializer(serializers.ModelSerializer):
         slug_field='username'
     )
 
+    def update(self, instance, validated_data):
+        instance.picture = validated_data['picture']
+        instance.save()
+        return instance
+
     class Meta:
         model = Profile
         fields = ['username', 'picture']
+        extra_kwargs = {
+            'picture': {'required': True}
+        }
 
 
 class UserSerializer(serializers.ModelSerializer):

@@ -7,7 +7,7 @@ from django.dispatch import receiver
 
 class Profile(models.Model):
     user = models.OneToOneField(User, blank=False, on_delete=models.CASCADE)
-    picture = models.ImageField(upload_to='profile_picture', blank=True)
+    picture = models.ImageField(upload_to='profile_picture', null=False, default='profile_picture/default.png')
 
 
 @receiver(models.signals.post_delete, sender=Profile)
@@ -34,6 +34,9 @@ def auto_delete_image_on_change(sender, instance, **kwargs):
     try:
         old_image = Profile.objects.get(pk=instance.pk).picture
     except Profile.DoesNotExist:
+        return False
+
+    if old_image.name == 'profile_picture/default.png':
         return False
 
     new_image = instance.picture
