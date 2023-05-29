@@ -42,7 +42,7 @@ class UserImageView(generics.ListAPIView):
 
 
 class ImageDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Image.objects.filter(active=True)
+    queryset = Image.objects.all()
     serializer_class = ImageDetailSerializer
     permission_classes = [IsOwnerOrReadOnly]
 
@@ -76,6 +76,24 @@ class TagDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     permission_classes = [AllowAny]  # [AllowAny]
+
+
+class ProfileView(generics.GenericAPIView):
+    serializer_class = ProfileSerializer
+    permission_classes = [IsAuthenticated]
+
+    def patch(self, request):
+        queryset = self.get_queryset()
+        profile = queryset.first()
+        serializer = self.get_serializer(profile, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response("Profile picture updated", status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def get_queryset(self):
+        user = self.request.user
+        return Profile.objects.filter(user=user)
 
 
 class CommentList(generics.ListCreateAPIView):

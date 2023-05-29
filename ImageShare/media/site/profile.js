@@ -23,11 +23,28 @@ function post_image(){
     tag_id_list = tag_field.map((x)=>{return parseInt(x, 10)});
     for(let i=0; i<tag_id_list.length; i++)
         formData.append('tag_id_list', tag_id_list[i])
-    formData.append('image', $('input[type=file]')[0].files[0]);
+    formData.append('image', $('input[type=file]#image')[0].files[0]);
 
     $.ajax({
         type: 'POST',
         url: "../../images/",
+        headers: auth_header,
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(){
+            location.reload();
+        }
+    });
+}
+
+function post_pfp(){
+    var formData = new FormData();
+    formData.append('picture', $('input[type=file]#pfp')[0].files[0]);
+
+    $.ajax({
+        type: 'PATCH',
+        url: "../../profile_update/",
         headers: auth_header,
         data: formData,
         processData: false,

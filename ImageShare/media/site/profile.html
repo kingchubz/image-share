@@ -41,23 +41,22 @@
 		</nav>
 	</header>
 
-	<!-- Modal -->
-	<div class="modal fade" id="image_form" tabindex="-1" aria-labelledby="image_form" aria-hidden="true">
+	<!-- Modals -->
+	<div class="modal fade" id="image_modal" tabindex="-1" aria-labelledby="image_modal_label" aria-hidden="true">
 	  <div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content bg-dark">
 		  <div class="modal-header">
-			<h1 class="modal-title fs-5" id="image_form_lable">Add image</h1>
+			<h1 class="modal-title fs-5" id="image_modal_label">Add image</h1>
 			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 		  </div>
 			  <div class="modal-body">
-				<form id="form_image">
+				<form id="image_form">
 					<label for="image">Зображення:</label>
 					<input type="file" id="image" name="image" accept="image/*">
 
 					<label for="tag_field">Тег:</label>
 					<select id="tag_field" name="tag" multiple>
 <!--						<option value="">-</option>-->
-					</select>
 					</select>
 
 					<label for="description">Опис зображення:</label>
@@ -72,11 +71,26 @@
 	  </div>
 	</div>
 
-
-<!--	<div class="d-flex justify-content-center" style="width: 100%;height: 100vh;position: absolute;z-index:1">-->
-<!--		<div class="align-self-center p-4" style="background-color: pink">-->
-<!--		</div>-->
-<!--	</div>-->
+	<div class="modal fade" id="profile_pic_modal" tabindex="-1" aria-labelledby="profile_pic_modal_label" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content bg-dark">
+		  <div class="modal-header">
+			<h1 class="modal-title fs-5" id="profile_pic_modal_label">Add profile picture</h1>
+			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		  </div>
+			  <div class="modal-body">
+				<form id="profile_pic_form">
+					<label for="image">Аватарка:</label>
+					<input type="file" id="pfp" name="pfp" accept="image/*">
+			  	</form>
+			  </div>
+			  <div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				<button type="button" onclick="post_pfp()" class="btn btn-primary">Add Image</button>
+			  </div>
+		</div>
+	  </div>
+	</div>
 
 	<div class="d-flex align-items-stretch mt-4">
 		<div class="d-flex flex-column text-center" style="width: 20%">
@@ -85,9 +99,8 @@
 			</div>
 			Nickname
 			<div class="d-inline-flex flex-column mt-3">
-				<button type="button" class="btn btn-primary m-3" data-bs-toggle="modal" data-bs-target="#image_form">Add image</button>
-				<button type="button" class="btn btn-primary m-3">Change name</button>
-				<button type="button" class="btn btn-primary m-3">Change profile picture</button>
+				<button type="button" class="btn btn-primary m-3" data-bs-toggle="modal" data-bs-target="#image_modal">Add image</button>
+				<button type="button" class="btn btn-primary m-3" data-bs-toggle="modal" data-bs-target="#profile_pic_modal">Change profile picture</button>
 				<button type="button" class="btn btn-primary m-3">Delete account</button>
 			</div>
 		</div>
