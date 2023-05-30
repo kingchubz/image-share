@@ -1,4 +1,4 @@
-$.get( "../../reports/", function( data ) {
+$.get( "./api/reports/", function( data ) {
   $("document").ready(()=>{
     const report_field = $("#report_field")[0];
     for(let i=0; i<data.count; i++){
@@ -24,19 +24,6 @@ $.get( "../../reports/", function( data ) {
 				</form>
 			</div>
 		</div>`
-    }
-
-    const tag_field = $("#tag_list")[0];
-    const all_tag_set = new Set()
-
-    for(let i=0; i<data.count; i++){
-        let tag_set = data.results[i].tag_set
-        for(let i=0; i<tag_set.length; i++){
-            if(!all_tag_set.has(tag_set[i].name)){
-                all_tag_set.add(tag_set[i].name)
-                tag_field.innerHTML += `<li><a href="${tag_set[i].url}">${tag_set[i].name}</a></li>`
-            }
-        }
     }
 
     if(document.cookie.includes("token")){

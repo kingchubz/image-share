@@ -14,7 +14,7 @@ function make_comment(){
     $("#image_id").attr('value', `${image_id}`);
 
 
-    $.ajax(`../../comments/`,{
+    $.ajax(`./api/comments/`,{
     method: 'POST',
     headers: auth_header,
     dataType: 'json',
@@ -24,7 +24,7 @@ function make_comment(){
     }});
 }
 
-$.get( "../../images/1/", function( data ) {
+$.get( "./api/images/1/", function( data ) {
   $("document").ready(()=>{
     const image_field = $("#image_field")[0];
     image_field.innerHTML = `<img src="${data.image}" style="max-width:100%;height:auto;"/>`

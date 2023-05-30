@@ -10,7 +10,7 @@ function get_auth_header(c){
 var auth_header = get_auth_header(document.cookie)
 
 function delete_image(id){
-    $.ajax(`../../images/${id}/`,{method: 'DELETE',headers: auth_header,success: function(){
+    $.ajax(`./api/images/${id}/`,{method: 'DELETE',headers: auth_header,success: function(){
         location.reload();
     }});
 }
@@ -27,7 +27,7 @@ function post_image(){
 
     $.ajax({
         type: 'POST',
-        url: "../../images/",
+        url: "./api/images/",
         headers: auth_header,
         data: formData,
         processData: false,
@@ -44,7 +44,7 @@ function post_pfp(){
 
     $.ajax({
         type: 'PATCH',
-        url: "../../profile_update/",
+        url: "./api/profile_update/",
         headers: auth_header,
         data: formData,
         processData: false,
@@ -57,7 +57,7 @@ function post_pfp(){
 
 //Getting images from server and displaying them
 $("document").ready(()=>{
-    $.ajax("../../user_image/",{ headers: auth_header,success: function( data ) {
+    $.ajax("./api/user_image/",{ headers: auth_header,success: function( data ) {
         const image_field = $("#image_field")[0];
         for(let i=0; i<data.count; i++){
             image_field.innerHTML +=
@@ -88,7 +88,7 @@ $("document").ready(()=>{
         }
     }});
 
-    $.ajax("../../tags/",{ headers: auth_header,success: function( data ) {
+    $.ajax("./api/tags/",{ headers: auth_header,success: function( data ) {
         const tag_field = $("#tag_field")[0];
         for(let i=0; i<data.count; i++){
             tag_field.innerHTML += `<option value="${data.results[i].id}">${data.results[i].name}</option>`
@@ -97,7 +97,7 @@ $("document").ready(()=>{
 
     }});
 
-    if(document.cookie.includes("token")){
+    if(document.cookie.includes("secret")){
         $("#auth").attr('style', 'display: none !important');
     } else {
         $("#profile").attr('style', 'display: none !important');

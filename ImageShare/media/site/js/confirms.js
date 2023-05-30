@@ -10,19 +10,19 @@ function get_auth_header(c){
 var auth_header = get_auth_header(document.cookie)
 
 function delete_image(id){
-    $.ajax(`../../image_activate/${id}/`,{method: 'DELETE',headers: auth_header,success: function(){
+    $.ajax(`./api/image_activate/${id}/`,{method: 'DELETE',headers: auth_header,success: function(){
         location.reload();
     }});
 }
 
 function confirm_image(id){
-    $.ajax(`../../image_activate/${id}/`,{method: 'PATCH',headers: auth_header,success: function(){
+    $.ajax(`./api/image_activate/${id}/`,{method: 'PATCH',headers: auth_header,success: function(){
         location.reload();
     }});
 }
 
 //Getting images from server and displaying them
-$.ajax("../../image_activate/",{ headers: auth_header,success: function( data ) {
+$.ajax("./api/image_activate/",{ headers: auth_header,success: function( data ) {
   $("document").ready(()=>{
     const image_field = $("#image_field")[0];
     for(let i=0; i<data.count; i++){

@@ -5,15 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Image Detail</title>
   	<link rel="icon" type="image/x-icon" href="./favicon.ico">
-    <link href="./bootstrap-5.2.3/css/bootstrap.css" rel="stylesheet">
-	<script src="jquery.js"></script>
-    <script src="detail.js" type="text/javascript"></script>
+    <link href="./css/bootstrap.min.css" rel="stylesheet">
+	<script src="./js/jquery.js"></script>
+    <script src="./js/detail.js" type="text/javascript"></script>
   </head>
   <body class="text-bg-secondary d-flex flex-column min-vh-100">
 	<header>
 		<nav class="navbar navbar-dark bg-dark">
 			<div class="container-float">
-				<a class="navbar-brand p-3" href="#">
+				<a class="navbar-brand p-3" href="./index">
 					<img src="./logo.ico" class="d-inline-block">
 					Explore
 				</a>
@@ -24,18 +24,17 @@
 			</div>
 
 			<div id="auth" class="navbar-nav d-inline-block px-2">
-				<a class="nav-link d-inline-block px-2" href="#">Sing In</a>
-				<a class="nav-link d-inline-block" href="#">Sing Up</a>
+				<a class="nav-link d-inline-block px-2" href="./signin">Sing In</a>
+				<a class="nav-link d-inline-block" href="./signup">Sing Up</a>
 			</div>
 
 			<div id="profile" style="padding-right: 4px" class="nav-item dropdown">
-				<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+				<a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">
 					<img src="./logo.ico" class="b-inline">
 				</a>
 				<ul class="dropdown-menu">
-					<li><a class="dropdown-item" href="#">Profile</a></li>
-					<li><a class="dropdown-item" href="#">Upload</a></li>
-					<li><a class="dropdown-item" href="#">Logout</a></li>
+					<li><a class="dropdown-item" href="./profile">Profile</a></li>
+					<li><a class="dropdown-item" onclick="logout()">Logout</a></li>
 				</ul>
 			</div>
 		</nav>
@@ -99,6 +98,6 @@
 		<p class="fw-lighter text-center">Dmitriev Svyatoslav shinyhero777@gmail.com</p>
 	</footer>
 	
-	<script src="./bootstrap-5.2.3/js/bootstrap.bundle.min.js"></script>
+	<script src="./js/bootstrap.bundle.min.js"></script>
   </body>
 </html>

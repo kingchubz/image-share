@@ -1,4 +1,4 @@
-$.get( "../../images/", function( data ) {
+$.get( "./api/images/", function( data ) {
   $("document").ready(()=>{
     const image_field = $("#image_field")[0];
     for(let i=0; i<data.count; i++){

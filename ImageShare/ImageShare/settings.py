@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-ft#+ox_%q6b6m@e_3y2ia4a5k9iebrurshe+^m%b0l+5r+c_(x
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]']
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': ['knox.auth.TokenAuthentication'],
@@ -113,7 +113,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Kyiv'
 
 USE_I18N = True
 
@@ -123,11 +123,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/var/www/static/'
 
 # User uploaded files
 
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = '/var/www/media/'
 MEDIA_URL = '/media/'
 
 # Default primary key field type
