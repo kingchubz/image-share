@@ -50,5 +50,8 @@ $("document").ready(()=>{
         $("#profile").attr('style', 'display: none !important');
     } else {
         $("#auth").attr('style', 'display: none !important');
+        $.ajax("./api/profile/",{ headers: auth_header,success: function( data ) {
+            $("#profile_image").attr('src', `${data.picture}`);
+        }});
     }
 });

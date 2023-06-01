@@ -46,6 +46,11 @@ $("document").ready(()=>{
         $("#profile").attr('style', 'display: none !important');
     } else {
         $("#auth").attr('style', 'display: none !important');
+        $.ajax("./api/profile/",{ headers: auth_header,success: function( data ) {
+            $("#profile_pic").attr('src', `${data.picture}`);
+            $("#profile_image").attr('src', `${data.picture}`);
+            $("#username").text(data.username)
+        }});
     }
 
     params = window.location.search
@@ -88,8 +93,7 @@ $("document").ready(()=>{
                     <p>${comment_set[i].text}</p>
                 </div>
             </div>`;
-        }
-        });
+    }});
 });
 
 

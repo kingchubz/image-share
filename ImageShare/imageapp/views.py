@@ -82,6 +82,11 @@ class ProfileView(generics.GenericAPIView):
     serializer_class = ProfileSerializer
     permission_classes = [IsAuthenticated]
 
+    def get(self, request):
+        instance = self.get_queryset().first()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
     def patch(self, request):
         queryset = self.get_queryset()
         profile = queryset.first()

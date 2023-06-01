@@ -30,7 +30,7 @@ function logout() {
 $("document").ready(()=>{
     if(expired){
         $("#profile").attr('style', 'display: none !important');
-        return
+        window.location.replace("./index");
     } else {
         $("#auth").attr('style', 'display: none !important');
     }
@@ -60,6 +60,9 @@ $("document").ready(()=>{
                     </form>
                 </div>
             </div>`
-        }
-    });
+    }});
+
+    $.ajax("./api/profile/",{ headers: auth_header,success: function( data ) {
+        $("#profile_image").attr('src', `${data.picture}`);
+    }});
 });

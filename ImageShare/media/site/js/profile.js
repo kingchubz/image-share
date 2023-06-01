@@ -62,7 +62,7 @@ function post_pfp(){
 
     $.ajax({
         type: 'PATCH',
-        url: "./api/profile_update/",
+        url: "./api/profile/",
         headers: auth_header,
         data: formData,
         processData: false,
@@ -77,9 +77,14 @@ function post_pfp(){
 $("document").ready(()=>{
     if(expired){
         $("#profile").attr('style', 'display: none !important');
-        return
+        window.location.replace("./index");
     } else {
         $("#auth").attr('style', 'display: none !important');
+        $.ajax("./api/profile/",{ headers: auth_header,success: function( data ) {
+            $("#profile_pic").attr('src', `${data.picture}`);
+            $("#profile_image").attr('src', `${data.picture}`);
+            $("#username").text(data.username)
+        }});
     }
 
     $.ajax("./api/user_image/",{ headers: auth_header,success: function( data ) {
