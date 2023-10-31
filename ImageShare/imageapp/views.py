@@ -5,6 +5,7 @@ from rest_framework import generics, mixins
 from knox.views import LoginView as KnoxLoginView
 
 from rest_framework.authentication import BasicAuthentication
+from rest_framework.pagination import PageNumberPagination
 
 # import models
 from imageapp.models import Image, Tag, Comment, Report, Profile
@@ -21,11 +22,21 @@ from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnl
 from rest_framework import status
 from rest_framework.response import Response
 
+from rest_framework import filters
+
+
+class LargeResultsSetPagination(PageNumberPagination):
+    page_size = 1000
+    page_size_query_param = 'page_size'
+    max_page_size = 10000
+
 
 class ImageList(generics.ListCreateAPIView):
     queryset = Image.objects.filter(active=True)
     serializer_class = ImageListSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['=tag__name']
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user.profile)
@@ -69,13 +80,14 @@ class ImageActivate(generics.GenericAPIView, mixins.ListModelMixin, mixins.Destr
 class TagList(generics.ListCreateAPIView):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
-    permission_classes = [AllowAny]  # [IsAuthenticatedOrReadOnly]
+    pagination_class = LargeResultsSetPagination
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 
 class TagDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
-    permission_classes = [AllowAny]  # [AllowAny]
+    permission_classes = [IsAdminUser]  # [AllowAny]
 
 
 class ProfileView(generics.GenericAPIView):

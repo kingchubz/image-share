@@ -94,24 +94,79 @@ $("document").ready(()=>{
         }});
     }
 
-    $.get( "./api/images/", function( data ) {
+    if(window.location.search.includes('search=')) {
+        var search = window.location.search.split('search=')[1];
+        search = search.split('&')[0];
+        $('#filter').text('tag: ' + search);
+    } else {
+        $('#filter').hide();
+    }
+
+    if(window.location.search.includes('page=')) {
+        var current_page = parseInt(window.location.search.split('page=')[1]);
+        if(current_page > 1) {
+            $(".page-num").each((index, element) => {
+                $(element).attr('onclick',`set_page(${current_page+index-1})`);
+                $(element).text(current_page+index-1);
+            });
+        }
+    }
+
+
+    $.get(`./api/images/${window.location.search}`, function( response ) {
         const image_field = $("#image_field")[0];
-        for(let i=0; i<data.count; i++){
-            image_field.innerHTML += `<div class="p-2"><a href="./detail?id=${data.results[i].id}"><img src="${data.results[i].image}" style="max-width:200px;max-height:150px;"></a></div>`
+
+        for(let i=0; i<response.results.length; i++){
+            image_field.innerHTML += `<div class="p-2"><a href="./detail?id=${response.results[i].id}"><img src="${response.results[i].image}" style="max-width:200px;max-height:150px;"></a></div>`
         }
 
         const tag_field = $("#tag_list")[0];
         const all_tag_set = new Set()
 
-        for(let i=0; i<data.count; i++){
-            let tag_set = data.results[i].tag_set
+        for(let i=0; i<response.results.length; i++){
+            let tag_set = response.results[i].tag_set
             for(let i=0; i<tag_set.length; i++){
                 if(!all_tag_set.has(tag_set[i].name)){
                     all_tag_set.add(tag_set[i].name)
-                    tag_field.innerHTML += `<li><a href="${tag_set[i].url}">${tag_set[i].name}</a></li>`
+                    tag_field.innerHTML += `<li><a href="./index?search=${tag_set[i].name}">${tag_set[i].name}</a></li>`
                 }
             }
         }
     });
-});
 
+
+    //search
+    var suggestions = [];
+    $.ajax("./api/tags/",{ headers: auth_header,success: function( data ) {
+        const tag_field = $("#tag_field")[0];
+        for(let i=0; i<data.count; i++){
+            suggestions.push(`${data.results[i].name}`);
+        }
+    }});
+
+    $("#resultBox").hide()
+    $("#search").on("input", ()=>{
+        let userData = $("#search").val();
+        let tagArray = [];
+        if(userData){
+            tagArray = suggestions.filter((e)=>{
+                return e.toLowerCase().startsWith(userData.toLowerCase());
+            });
+            tagArray = tagArray.map((e)=>{
+                return `<a href="./index?search=${e}" style="color: inherit; text-decoration: inherit;">${e}</a><br>`;
+            });
+
+            showSuggestions(tagArray);
+            $("#resultBox").show();
+        }else{
+            $("#resultBox").hide()
+        }
+    });
+
+    function showSuggestions(list){
+         $("#resultBox")[0].innerHTML = ''
+        list.forEach((e)=>{
+             $("#resultBox")[0].innerHTML += e;
+        });
+    }
+});
