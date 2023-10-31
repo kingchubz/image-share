@@ -27,6 +27,14 @@ function logout() {
     }});
 }
 
+$(document).keyup(function(event) {
+    if ($("#search").is(":focus") && event.key == "Enter") {
+        var prompt = $("#search").text();
+        prompt = $("#search").val();
+        window.location.replace(`./index?search=${prompt}`);
+    }
+});
+
 function register() {
     var username = $("input#username").val();
     var password = $("input#password").val();
