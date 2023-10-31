@@ -27,6 +27,14 @@ function logout() {
     }});
 }
 
+$(document).keyup(function(event) {
+    if ($("#search").is(":focus") && event.key == "Enter") {
+        var prompt = $("#search").text();
+        prompt = $("#search").val();
+        window.location.replace(`./index?search=${prompt}`);
+    }
+});
+
 var image_id;
 function make_comment(){
     $("#image_id").attr('value', `${image_id}`);
@@ -44,6 +52,7 @@ function make_comment(){
 $("document").ready(()=>{
     if(expired){
         $("#profile").attr('style', 'display: none !important');
+        $("#user_comment").attr('style', 'display: none !important');
     } else {
         $("#auth").attr('style', 'display: none !important');
         $.ajax("./api/profile/",{ headers: auth_header,success: function( data ) {
@@ -68,7 +77,7 @@ $("document").ready(()=>{
         const tag_set = data.tag_set;
 
         for(let i=0; i<tag_set.length; i++){
-            tag_field.innerHTML += `<li><a href="${tag_set[i].url}">${tag_set[i].name}</a></li>`
+            tag_field.innerHTML += `<li><a href="../index?search=${tag_set[i].name}">${tag_set[i].name}</a></li>`
         }
 
         const comment_field = $("#comment_field")[0];
