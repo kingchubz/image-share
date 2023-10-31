@@ -27,25 +27,40 @@ function logout() {
     }});
 }
 
+$(document).keyup(function(event) {
+    if ($("#search").is(":focus") && event.key == "Enter") {
+        var prompt = $("#search").text();
+        prompt = $("#search").val();
+        window.location.replace(`./index?search=${prompt}`);
+    }
+});
+
 function login() {
     var username = $("input#username").val();
     var password = $("input#password").val();
 
-    $.ajax
-    ({
+    request = $.ajax({
       type: "POST",
       url: "./api/login/",
       dataType: 'json',
       headers: {
         "Authorization": "Basic " + btoa(username + ":" + password)
       },
-    }).done((data)=>{
+    });
+
+    request.done((data)=>{
         document.cookie = "secret" +"=" + data.token + " " + data.expiry;
         window.location.replace("./index");
+    });
+
+    request.fail((data)=>{
+        $("#alert").show();
     });
 }
 
 $("document").ready(()=>{
+    $("#alert").hide();
+
     if(expired){
         $("#profile").attr('style', 'display: none !important');
     } else {
