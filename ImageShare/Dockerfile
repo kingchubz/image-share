@@ -5,8 +5,9 @@ RUN apk add python3 py3-pip uwsgi uwsgi-python3 nginx
 RUN pip install django djangorestframework Pillow psycopg cryptography django-rest-knox tzdata
 
 COPY media/site/ /var/www/
-COPY media/media/ /var/www/media/
-COPY db.sqlite3 /srv/db.sqlite3
+#COPY media/media/ /var/www/media/
+COPY static/ /var/www/static/
+# COPY db.sqlite3 /srv/db.sqlite3
 COPY start.sh /srv/
 COPY ImageShare/ /srv/ImageShare/
 COPY imageapp/ /srv/imageapp/
