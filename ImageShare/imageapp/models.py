@@ -1,13 +1,35 @@
 import os
+import secrets
 
 from django.db import models
 from django.contrib.auth.models import User
 from django.dispatch import receiver
 
+from django.core.files.base import ContentFile
+from PIL import Image as PIL_Image
+from io import BytesIO
+
 
 class Profile(models.Model):
     user = models.OneToOneField(User, blank=False, on_delete=models.CASCADE)
     picture = models.ImageField(upload_to='profile_picture', null=False, default='profile_picture/default.png')
+
+    def save(self, *args, **kwargs):
+        if self.picture:
+            filename = "%s.png" % secrets.token_urlsafe(16)
+
+            image = PIL_Image.open(self.picture)
+            if image.mode in ('RGBA', 'LA'):
+                background = PIL_Image.new(image.mode[:-1], image.size, '#fff')
+                background.paste(image, image.split()[-1])
+                background.thumbnail((100, 100))
+                image = background
+            image_io = BytesIO()
+            image.save(image_io, format='PNG', quality=100)
+
+            self.picture.save(filename, ContentFile(image_io.getvalue()), save=False)
+
+        super(Profile, self).save(*args, **kwargs)
 
 
 @receiver(models.signals.post_delete, sender=Profile)
@@ -51,6 +73,22 @@ class Image(models.Model):
     description = models.CharField(max_length=1000, blank=True)
     active = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        if self.image:
+            filename = "%s.png" % secrets.token_urlsafe(16)
+
+            image = PIL_Image.open(self.image)
+            if image.mode in ('RGBA', 'LA'):
+                background = PIL_Image.new(image.mode[:-1], image.size, '#fff')
+                background.paste(image, image.split()[-1])
+                image = background
+            image_io = BytesIO()
+            image.save(image_io, format='PNG', quality=100)
+
+            self.image.save(filename, ContentFile(image_io.getvalue()), save=False)
+
+        super(Image, self).save(*args, **kwargs)
 
     class Meta:
         ordering = ['created']
