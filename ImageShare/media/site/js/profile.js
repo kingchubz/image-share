@@ -27,6 +27,63 @@ function logout() {
     }});
 }
 
+function next_page() {
+    if(window.location.search.includes('page=')) {
+        var current_page = window.location.search.split('page=')[1];
+        var next_page = parseInt(current_page) + 1;
+        if(window.location.search.includes('search=')) {
+            url = window.location.href.split('&')[0];
+            window.location.assign(url + '&page=' + next_page);
+        } else {
+            window.location.assign('./profile?page=' + next_page);
+        }
+    } else {
+        if(window.location.search.includes('search='))
+            window.location.assign(window.location.href + '&page=2');
+        else
+            window.location.assign('./profile?page=2');
+    }
+}
+
+function prev_page() {
+    if(window.location.search.includes('page=')) {
+        var current_page = window.location.search.split('page=')[1];
+        var prev_page = parseInt(current_page) - 1;
+        if(prev_page <= 0)
+            return;
+        if(window.location.search.includes('search=')) {
+            url = window.location.href.split('&')[0];
+            window.location.assign(url + '&page=' + prev_page);
+        } else {
+            window.location.assign('./profile?page=' + prev_page);
+        }
+    }
+}
+
+function set_page(target_page) {
+    if(window.location.search.includes('page=')) {
+        if(window.location.search.includes('search=')) {
+            url = window.location.href.split('&')[0];
+            window.location.assign(url + '&page=' + target_page);
+        } else {
+            window.location.assign('./profile?page=' + target_page);
+        }
+    } else {
+        if(window.location.search.includes('search='))
+            window.location.assign(window.location.href + '&page=' + target_page);
+        else
+            window.location.assign('./profile?page=' + target_page);
+    }
+}
+
+$(document).keyup(function(event) {
+    if ($("#search").is(":focus") && event.key == "Enter") {
+        var prompt = $("#search").text();
+        prompt = $("#search").val();
+        window.location.replace(`./index?search=${prompt}`);
+    }
+});
+
 function delete_image(id){
     $.ajax(`./api/images/${id}/`,{method: 'DELETE',headers: auth_header,success: function(){
         location.reload();
@@ -43,16 +100,21 @@ function post_image(){
         formData.append('tag_id_list', tag_id_list[i])
     formData.append('image', $('input[type=file]#image')[0].files[0]);
 
-    $.ajax({
+    request = $.ajax({
         type: 'POST',
         url: "./api/images/",
         headers: auth_header,
         data: formData,
         processData: false,
-        contentType: false,
-        success: function(){
-            location.reload();
-        }
+        contentType: false
+    });
+
+    request.done(()=>{
+        location.reload();
+    });
+
+    request.fail((data)=>{
+        $("#alert").show();
     });
 }
 
@@ -60,21 +122,28 @@ function post_pfp(){
     let formData = new FormData();
     formData.append('picture', $('input[type=file]#pfp')[0].files[0]);
 
-    $.ajax({
+    request = $.ajax({
         type: 'PATCH',
         url: "./api/profile/",
         headers: auth_header,
         data: formData,
         processData: false,
-        contentType: false,
-        success: function(){
-            location.reload();
-        }
+        contentType: false
+    });
+
+    request.done(()=>{
+        location.reload();
+    });
+
+    request.fail((data)=>{
+        $("#alert").show();
     });
 }
 
 //Getting images from server and displaying them
 $("document").ready(()=>{
+    $("#alert").hide();
+
     if(expired){
         $("#profile").attr('style', 'display: none !important');
         window.location.replace("./index");
@@ -87,12 +156,22 @@ $("document").ready(()=>{
         }});
     }
 
-    $.ajax("./api/user_image/",{ headers: auth_header,success: function( data ) {
+    if(window.location.search.includes('page=')) {
+        var current_page = parseInt(window.location.search.split('page=')[1]);
+        if(current_page > 1) {
+            $(".page-num").each((index, element) => {
+                $(element).attr('onclick',`set_page(${current_page+index-1})`);
+                $(element).text(current_page+index-1);
+            });
+        }
+    }
+
+    $.ajax(`./api/user_image/${window.location.search}`,{ headers: auth_header,success: function( data ) {
         const image_field = $("#image_field")[0];
         for(let i=0; i<data.count; i++){
             image_field.innerHTML +=
                     `<div class="position-relative m-2 text-center">
-                        <a href="${data.results[i].url}"><img src="${data.results[i].image}" style="max-width:200px;max-height:150px;"></a>
+                        <a href="./detail?id=${data.results[i].id}"><img src="${data.results[i].image}" style="max-width:200px;max-height:150px;"></a>
                         <button type="button" class="btn btn-outline-danger position-absolute bottom-0 start-50 translate-middle-x w-100" data-bs-toggle="modal" data-bs-target="#delete${i}">
                             Delete
                         </button>

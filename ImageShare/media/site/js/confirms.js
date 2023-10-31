@@ -27,6 +27,63 @@ function logout() {
     }});
 }
 
+function next_page() {
+    if(window.location.search.includes('page=')) {
+        var current_page = window.location.search.split('page=')[1];
+        var next_page = parseInt(current_page) + 1;
+        if(window.location.search.includes('search=')) {
+            url = window.location.href.split('&')[0];
+            window.location.assign(url + '&page=' + next_page);
+        } else {
+            window.location.assign('./confirms?page=' + next_page);
+        }
+    } else {
+        if(window.location.search.includes('search='))
+            window.location.assign(window.location.href + '&page=2');
+        else
+            window.location.assign('./confirms?page=2');
+    }
+}
+
+function prev_page() {
+    if(window.location.search.includes('page=')) {
+        var current_page = window.location.search.split('page=')[1];
+        var prev_page = parseInt(current_page) - 1;
+        if(prev_page <= 0)
+            return;
+        if(window.location.search.includes('search=')) {
+            url = window.location.href.split('&')[0];
+            window.location.assign(url + '&page=' + prev_page);
+        } else {
+            window.location.assign('./confirms?page=' + prev_page);
+        }
+    }
+}
+
+function set_page(target_page) {
+    if(window.location.search.includes('page=')) {
+        if(window.location.search.includes('search=')) {
+            url = window.location.href.split('&')[0];
+            window.location.assign(url + '&page=' + target_page);
+        } else {
+            window.location.assign('./confirms?page=' + target_page);
+        }
+    } else {
+        if(window.location.search.includes('search='))
+            window.location.assign(window.location.href + '&page=' + target_page);
+        else
+            window.location.assign('./confirms?page=' + target_page);
+    }
+}
+
+$(document).keyup(function(event) {
+    if ($("#search").is(":focus") && event.key == "Enter") {
+        var prompt = $("#search").text();
+        prompt = $("#search").val();
+        window.location.replace(`./index?search=${prompt}`);
+    }
+});
+
 function delete_image(id){
     $.ajax(`./api/image_activate/${id}/`,{method: 'DELETE',headers: auth_header,success: function(){
         location.reload();
@@ -52,7 +109,17 @@ $("document").ready(()=>{
         }});
     }
 
-    $.ajax("./api/image_activate/",{ headers: auth_header,success: function( data ) {
+    if(window.location.search.includes('page=')) {
+        var current_page = parseInt(window.location.search.split('page=')[1]);
+        if(current_page > 1) {
+            $(".page-num").each((index, element) => {
+                $(element).attr('onclick',`set_page(${current_page+index-1})`);
+                $(element).text(current_page+index-1);
+            });
+        }
+    }
+
+    $.ajax(`./api/image_activate/${window.location.search}`,{ headers: auth_header,success: function( data ) {
         const image_field = $("#image_field")[0];
         for(let i=0; i<data.count; i++){
             image_field.innerHTML += `

@@ -27,6 +27,63 @@ function logout() {
     }});
 }
 
+function next_page() {
+    if(window.location.search.includes('page=')) {
+        var current_page = window.location.search.split('page=')[1];
+        var next_page = parseInt(current_page) + 1;
+        if(window.location.search.includes('search=')) {
+            url = window.location.href.split('&')[0];
+            window.location.assign(url + '&page=' + next_page);
+        } else {
+            window.location.assign('./index?page=' + next_page);
+        }
+    } else {
+        if(window.location.search.includes('search='))
+            window.location.assign(window.location.href + '&page=2');
+        else
+            window.location.assign('./index?page=2');
+    }
+}
+
+function prev_page() {
+    if(window.location.search.includes('page=')) {
+        var current_page = window.location.search.split('page=')[1];
+        var prev_page = parseInt(current_page) - 1;
+        if(prev_page <= 0)
+            return;
+        if(window.location.search.includes('search=')) {
+            url = window.location.href.split('&')[0];
+            window.location.assign(url + '&page=' + prev_page);
+        } else {
+            window.location.assign('./index?page=' + prev_page);
+        }
+    }
+}
+
+function set_page(target_page) {
+    if(window.location.search.includes('page=')) {
+        if(window.location.search.includes('search=')) {
+            url = window.location.href.split('&')[0];
+            window.location.assign(url + '&page=' + target_page);
+        } else {
+            window.location.assign('./index?page=' + target_page);
+        }
+    } else {
+        if(window.location.search.includes('search='))
+            window.location.assign(window.location.href + '&page=' + target_page);
+        else
+            window.location.assign('./index?page=' + target_page);
+    }
+}
+
+$(document).keyup(function(event) {
+    if ($("#search").is(":focus") && event.key == "Enter") {
+        var prompt = $("#search").text();
+        prompt = $("#search").val();
+        window.location.replace(`./index?search=${prompt}`);
+    }
+});
+
 $("document").ready(()=>{
     if(expired){
         $("#profile").attr('style', 'display: none !important');
