@@ -15,14 +15,8 @@ COPY site/django-static/ /var/www/django-static/
 COPY ImageShare/ /srv/ImageShare/
 COPY imageapp/ /srv/imageapp/
 
-# secret
-COPY .pwdfile /srv/
-
-# environment
-ENV PGSERVICEFILE=/srv/pg_service.conf
-
 # configuration files
-COPY pg_service.conf /srv/
+COPY .pg_service.conf /srv/
 COPY uwsgi.ini /srv/
 COPY server.conf /etc/nginx/http.d/default.conf
 
