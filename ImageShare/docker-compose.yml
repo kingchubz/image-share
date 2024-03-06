@@ -20,7 +20,7 @@ services:
       - 80:80
     volumes:
       - type: bind
-        source: ./media/media/
+        source: ./site/media/
         target: /var/www/media/
 
 volumes:

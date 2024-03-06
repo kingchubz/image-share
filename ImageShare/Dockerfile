@@ -4,22 +4,26 @@ RUN apk update
 RUN apk add python3 py3-pip uwsgi uwsgi-python3 nginx
 RUN pip install --break-system-packages django djangorestframework Pillow psycopg2-binary cryptography django-rest-knox tzdata
 
-ENV PGSERVICEFILE=/srv/pg_service.conf
+# static files
+COPY site/static/ /var/www/
+COPY site/django-static/ /var/www/django-static/
 
-COPY pg_service.conf /srv/
-COPY .pwdfile /srv/
-COPY uwsgi.ini /srv/
-COPY start.sh /srv/
-
-COPY media/site/ /var/www/
-COPY static/ /var/www/static/
-COPY start.sh /srv/
+# app files
 COPY ImageShare/ /srv/ImageShare/
 COPY imageapp/ /srv/imageapp/
 
+# secret
+COPY .pwdfile /srv/
+
+# environment
+ENV PGSERVICEFILE=/srv/pg_service.conf
+
+# configuration files
+COPY pg_service.conf /srv/
+COPY uwsgi.ini /srv/
 COPY server.conf /etc/nginx/http.d/default.conf
 
-
+COPY start.sh /srv/
 CMD ["/bin/sh", "/srv/start.sh"]
 
 # EXPOSE 80/tcp
