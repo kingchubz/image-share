@@ -2,7 +2,10 @@ FROM alpine
 
 RUN apk update
 RUN apk add python3 py3-pip uwsgi uwsgi-python3 nginx
-RUN pip install --break-system-packages django djangorestframework Pillow psycopg2-binary cryptography django-rest-knox tzdata
+
+# requirements
+COPY requirements.txt /srv/
+RUN pip install --break-system-packages -r /srv/requirements.txt
 
 # static files
 COPY site/static/ /var/www/
