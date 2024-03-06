@@ -86,8 +86,12 @@ WSGI_APPLICATION = 'ImageShare.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'PASSWORD': 'example',
+        'OPTIONS': {
+            'service': 'db',
+            'passfile': '.pwdfile',
+        },
     }
 }
 

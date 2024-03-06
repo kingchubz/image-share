@@ -1,15 +1,27 @@
 version: '3'
 
 services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: example
+      POSTGRES_DB: db
+    ports:
+      - 5432:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
   server:
     image: image_share
     build: .
+    restart: always
     ports:
       - 80:80
     volumes:
       - type: bind
-        source: ./db.sqlite3
-        target: /srv/db.sqlite3
-      - type: bind
         source: ./media/media/
         target: /var/www/media/
+
+volumes:
+  pgdata:
