@@ -18,7 +18,7 @@ COPY imageapp/ /srv/imageapp/
 # configuration files
 COPY .pg_service.conf /srv/
 COPY uwsgi.ini /srv/
-COPY server.conf /etc/nginx/http.d/default.conf
+COPY nginx.conf /etc/nginx/http.d/default.conf
 
 COPY start.sh /srv/
 CMD ["/bin/sh", "/srv/start.sh"]
