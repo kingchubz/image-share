@@ -127,12 +127,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_ROOT = '/var/www/django-static/'  # BASE_DIR / 'static'  #
+STATIC_ROOT = '/var/www/django-static/'
 STATIC_URL = '/django-static/'
 
 # User uploaded files
 
-MEDIA_ROOT = '/var/www/media/'  # BASE_DIR / 'media'  #
+MEDIA_ROOT = '/var/www/media/'
 MEDIA_URL = '/media/'
 
 # Default primary key field type
