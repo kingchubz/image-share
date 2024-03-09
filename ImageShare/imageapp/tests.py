@@ -10,10 +10,14 @@ from django.core.files.images import ImageFile
 class TestModels(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username='test_user', password='password')
-        self.image = ImageFile(open('site/media/profile_picture/default.png','rb'))
+        self.image = ImageFile(open('site/media/profile_picture/default.png', 'rb'))
+        self.profile = Profile.objects.create(user=self.user)
+
+    def tearDown(self) -> None:
+        self.profile.delete()
 
     def test_profile_model(self):
-        profile = Profile.objects.create(user=self.user)
+        profile = self.profile
 
         image_path = profile.picture.name
 
@@ -30,7 +34,7 @@ class TestModels(TestCase):
         self.assertFalse(path.isfile(image_path))
 
     def test_image_model(self):
-        profile = Profile.objects.create(user=self.user)
+        profile = self.profile
         image = Image.objects.create(owner=profile, image=self.image, description='test descr')
 
         image_path = image.image.name
@@ -51,10 +55,10 @@ class TestModels(TestCase):
         user_pk = image.owner.user.pk
         image.delete()
         self.assertTrue(User.objects.filter(pk=user_pk).exists())
-        self.assertFalse(path.isfile(image_path))
+        self.assertFalse(path.isfile(new_image_path))
 
     def test_tag_model(self):
-        profile = Profile.objects.create(user=self.user)
+        profile = self.profile
         image = Image.objects.create(owner=profile, image=self.image)
         tag = Tag.objects.create(name='test')
         tag.images.set([image])
@@ -64,14 +68,14 @@ class TestModels(TestCase):
         self.assertTrue(Image.objects.filter(pk=image.pk).exists())
 
     def test_comment_model(self):
-        profile = Profile.objects.create(user=self.user)
+        profile = self.profile
         image = Image.objects.create(owner=profile, image=self.image)
         comment = Comment.objects.create(owner=profile, image=image, text='nice')
 
         self.assertIsInstance(comment, Comment)
 
     def test_report_model(self):
-        by_user_profile = Profile.objects.create(user=self.user)
+        by_user_profile = self.profile
         reported_user = User.objects.create_user(username='reported_user', password='password')
         reported_user_profile = Profile.objects.create(user=reported_user)
 
