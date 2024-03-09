@@ -91,11 +91,15 @@ WSGI_APPLICATION = 'ImageShare.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'db',
+        'USER': 'postgres',
+        'HOST': 'anon-notebook',
+        'PORT': '5432',
         'PASSWORD': config['POSTGRES_PASSWORD'],
-        'OPTIONS': {
-            'service': 'test_db_service',
-        },
+        'TEST': {
+            'NAME': 'test_db'
+        }
     }
 }
 
