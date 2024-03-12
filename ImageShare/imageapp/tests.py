@@ -10,11 +10,12 @@ from django.core.files.images import ImageFile
 class TestModels(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username='test_user', password='password')
-        self.image = ImageFile(open('site/media/profile_picture/default.png', 'rb'))
+        self.image = ImageFile(open('site/media/profile_picture/test.png', 'rb'))
         self.profile = Profile.objects.create(user=self.user)
 
     def tearDown(self) -> None:
-        self.profile.delete()
+        if Profile.objects.filter(pk=self.profile.pk).exists():
+            self.profile.delete()
 
     def test_profile_model(self):
         profile = self.profile
@@ -24,7 +25,6 @@ class TestModels(TestCase):
         self.assertIsInstance(profile, Profile)
         self.assertIsInstance(profile.picture, ImageFile)
         self.assertEqual(profile.user.username, self.user.username)
-        self.assertNotEqual(image_path, self.image.name)
         self.assertNotEqual(path.basename(image_path), path.basename(self.image.name))
 
         # image file deletes from system when profile object deletes

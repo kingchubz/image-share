@@ -15,7 +15,7 @@ class Profile(models.Model):
     picture = models.ImageField(upload_to='profile_picture', null=False, default='profile_picture/default.png')
 
     def save(self, *args, **kwargs):
-        if self.picture:
+        if self.picture.name != 'profile_picture/default.png':
             filename = "%s.png" % secrets.token_urlsafe(16)
 
             image = PIL_Image.open(self.picture)
@@ -38,6 +38,14 @@ def auto_delete_image_on_delete(sender, instance, **kwargs):
     Deletes image from filesystem
     when corresponding `Profile` object is deleted.
     """
+    try:
+        image = Profile.objects.get(pk=instance.pk).picture
+    except Profile.DoesNotExist:
+        return False
+
+    if image.name == 'profile_picture/default.png':
+        return False
+
     if instance.picture:
         if os.path.isfile(instance.picture.path):
             os.remove(instance.picture.path)
