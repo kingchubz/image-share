@@ -7,13 +7,16 @@ RUN apk add python3 py3-pip uwsgi uwsgi-python3 nginx
 COPY requirements.txt /srv/
 RUN pip install --break-system-packages -r /srv/requirements.txt
 
-# static files
-COPY site/static/ /var/www/
-COPY site/django-static/ /var/www/django-static/
-
 # app files
 COPY ImageShare/ /srv/ImageShare/
 COPY imageapp/ /srv/imageapp/
+
+# static files
+ENV PYTHONPATH=/srv/
+ENV DJANGO_SETTINGS_MODULE=ImageShare.settings
+RUN django-admin collectstatic
+
+COPY site/static/ /var/www/
 
 # configuration files
 COPY .pg_service.conf /srv/

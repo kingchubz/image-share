@@ -19,8 +19,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = environ['SECRET_KEY']
+SECRET_KEY = environ.get('SECRET_KEY', default='')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -88,7 +87,7 @@ WSGI_APPLICATION = 'ImageShare.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'PASSWORD': environ['DATABASE_PASSWORD'],
+        'PASSWORD': environ.get('DATABASE_PASSWORD', None),
         'OPTIONS': {
             'service': 'db_service',
         },
